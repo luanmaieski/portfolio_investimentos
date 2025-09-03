@@ -34,7 +34,7 @@ cd portfolio_investimentos.git
 ```bash
 docker-compose up --build
 ```
-### 3. Acessoar a aplicação
+### 3. Acessar a aplicação
 - Interface Streamlit → http://localhost:8501
 
 - Docs da API (Swagger) → http://localhost:8000/docs
