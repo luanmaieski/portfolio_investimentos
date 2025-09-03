@@ -28,7 +28,7 @@ Este projeto é uma aplicação para controle de ativos financeiros, onde é pos
 ### 1. Clonar o repositório
 ```bash
 git clone https://github.com/luanmaieski/portfolio_investimentos.git
-cd portfolio_investimentos.git
+cd portfolio_investimentos
 ```
 ### 2. Subir os containers
 ```bash
@@ -47,8 +47,11 @@ docker-compose up --build
 ├── docker-compose.yml    # Orquestração dos containers
 └── README.md             # Documentação do projeto
 ```
+## Arquitetura
+![arquitetura](Arq.png)
 ## Prévia do Frontend
 ![previa](crud.gif)
+
 ## 📌 Próximos Passos (possíveis melhorias)
 - Autenticação de usuários
 
