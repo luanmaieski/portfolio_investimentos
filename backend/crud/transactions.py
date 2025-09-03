@@ -90,8 +90,8 @@ def get_summary(db: Session):
 def get_realized_profit(db: Session):
     txs = db.query(Transaction).join(Asset).order_by(Transaction.date).all()
 
-    positions = {}  # {asset_id: {"qty": float, "avg_price": float}}
-    realized = []   # lista de dicts com {ticker, realized_profit}
+    positions = {}  # {asset_id: {"qty": float, "avg_price": float, "profit": float, "ticker": str}}
+    realized = []
 
     for tx in txs:
         asset_id = tx.asset_id
@@ -101,18 +101,25 @@ def get_realized_profit(db: Session):
         pos = positions[asset_id]
 
         if tx.operation == "BUY":
-            # recalcula preço médio
+            # recalcula preço médio ponderado
             total_cost = pos["qty"] * pos["avg_price"] + tx.quantity * tx.price
             pos["qty"] += tx.quantity
             pos["avg_price"] = total_cost / pos["qty"]
 
         elif tx.operation == "SELL":
-            if pos["qty"] >= tx.quantity:  # venda válida
-                lucro = (tx.price - pos["avg_price"]) * tx.quantity
-                pos["qty"] -= tx.quantity
-                pos["profit"] += lucro
+            if pos["qty"] <= 0:
+                # opcional: ignorar vendas sem posição (evita short selling)
+                continue
 
-    # gera resumo
+            sell_qty = min(tx.quantity, pos["qty"])  # não vender mais do que tem
+            lucro = (tx.price - pos["avg_price"]) * sell_qty
+
+            pos["qty"] -= sell_qty
+            pos["profit"] += lucro
+
+            # se ainda houver quantidade na venda que não foi casada, ignora
+
+    # resumo final
     for asset_id, pos in positions.items():
         realized.append({
             "ticker": pos["ticker"],

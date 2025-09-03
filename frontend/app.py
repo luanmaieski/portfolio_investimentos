@@ -180,8 +180,6 @@ with tab3:
                 if df.empty:
                     st.info("Nenhuma posição em aberto (todas as quantidades zeradas).")
                 else:
-                    st.dataframe(df)
-
                     fig = px.bar(
                         df,
                         x="net_quantity",
@@ -191,6 +189,9 @@ with tab3:
                         title="Posição líquida por ativo",
                         text="net_quantity"
                     )
+                    df = df.rename(columns={"ticker": "Ticker", "name": "Nome", "net_quantity": "Quantidade da Posição", "avg_price": "Preço Médio"})
+                    st.dataframe(df)
+
                     st.plotly_chart(fig, use_container_width=True)
 
         except Exception as e:
@@ -207,7 +208,8 @@ with tab3:
             else:
                 df = pd.DataFrame(data)
                 df = df[df["realized_profit"] != 0]
-                st.dataframe(df)
+                df2 = df.rename(columns={"ticker": "Ticker", "realized_profit": "Lucro/Prejuízo Realizado"})
+                st.dataframe(df2)
 
                 fig = px.bar(
                     df,
