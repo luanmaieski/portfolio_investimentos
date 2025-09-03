@@ -47,7 +47,8 @@ docker-compose up --build
 ├── docker-compose.yml    # Orquestração dos containers
 └── README.md             # Documentação do projeto
 ```
-
+## Prévia do Frontend
+![previa](crud.gif)
 ## 📌 Próximos Passos (possíveis melhorias)
 - Autenticação de usuários
 
